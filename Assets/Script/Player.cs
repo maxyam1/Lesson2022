@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     [SerializeField] SpriteRenderer sr;
     [SerializeField] Text text;
 
+    [SerializeField] GameObject bulletPrefab;
+
     private int coinCount = 0;
 
     Rigidbody2D rb;
@@ -28,12 +30,36 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         horiznotalImput = Input.GetAxis("Horizontal");
+        if (Input.GetKeyDown(KeyCode.V)) 
+        {
+            if (horiznotalImput > 0) 
+            {
+                Shoot(true);
+            }
+            if (horiznotalImput < 0) 
+            {
+                Shoot(false);
+            }
+        }
+
         MovementLogic(horiznotalImput);
         JumpLogic();
 
         if (transform.position.y < -10f) 
         {
             Die();
+        }
+    }
+
+    private void Shoot(bool isRight) 
+    {
+        if (isRight)
+        {
+            Instantiate(bulletPrefab, transform.position, Quaternion.Euler(0,0,0));
+        }
+        else 
+        {
+            Instantiate(bulletPrefab, transform.position, Quaternion.Euler(0,0,180));
         }
     }
 
